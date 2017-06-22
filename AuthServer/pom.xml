@@ -12,7 +12,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<org.springframework.version>3.2.14.RELEASE</org.springframework.version>
-		<hibernate>4.3.6.Final</hibernate>
 		<spring.security.version>3.1.0.RELEASE</spring.security.version>
 		<jersey-spring>1.18.1</jersey-spring>
 		<servlet-version>3.0.1</servlet-version>
@@ -256,7 +255,6 @@
 			<artifactId>spring-security-oauth2</artifactId>
 			<version>1.0.5.RELEASE</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
@@ -270,13 +268,19 @@
 		<!-- Hibernate Dependencies -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.4.1.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate}</version>
+			<version>3.4.0.GA</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate}</version>
+			<version>5.2.10.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>

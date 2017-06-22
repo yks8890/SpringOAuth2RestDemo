@@ -11,95 +11,106 @@
   drop table if exists ClientDetails;
   drop table if exists users;
 
-  create table if not exists person(ID INTEGER NOT NULL primary key,FIRST_NAME VARCHAR(100),LAST_NAME VARCHAR(100),NUMBER INTEGER,BRITH_DATE DATE);
+  CREATE TABLE IF NOT EXISTS PERSON(
+  ID INTEGER NOT NULL PRIMARY KEY,
+  FIRST_NAME VARCHAR(100),
+  LAST_NAME VARCHAR(100),
+  NUMBER INTEGER,
+  BRITH_DATE DATE
+  );
 
-  create table if not exists  users(
-	  username varchar(50) not null primary key,
-	  password varchar(50) not null,
-	  enabled boolean not null);
+  CREATE TABLE IF NOT EXISTS  USERS(
+	  USERNAME VARCHAR(50) NOT NULL PRIMARY KEY,
+	  PASSWORD VARCHAR(50) NOT NULL,
+	  ENABLED BOOLEAN NOT NULL);
 
-  create table if not exists  authorities (
-	  username varchar(50) not null,
-	  authority varchar(50) not null,
-	  constraint fk_authorities_users foreign key(username) references users(username),
-	  unique index ix_auth_username (username,authority)
+  CREATE TABLE IF NOT EXISTS  AUTHORITIES (
+	  USERNAME VARCHAR(50) NOT NULL,
+	  AUTHORITY VARCHAR(50) NOT NULL,
+	  CONSTRAINT FK_AUTHORITIES_USERS FOREIGN KEY(USERNAME) REFERENCES USERS(USERNAME),
+	  UNIQUE INDEX IX_AUTH_USERNAME (USERNAME,AUTHORITY)
 	  );
 
-	  #create unique index ix_auth_username on authorities (username,authority);
+	  #
+	create unique index ix_auth_username on authorities (username,authority);
 
 
-	create table if not exists groups (
-	  id BIGINT AUTO_INCREMENT  primary key,
-	  group_name varchar(50) not null);
+	CREATE TABLE IF NOT EXISTS GROUPS (
+	  ID BIGINT AUTO_INCREMENT  PRIMARY KEY,
+	  GROUP_NAME VARCHAR(50) NOT NULL
+	  );
 
-	create table if not exists group_authorities (
-	  group_id bigint not null,
-	  authority varchar(50) not null,
-	  constraint fk_group_authorities_group foreign key(group_id) references groups(id));
+	CREATE TABLE IF NOT EXISTS GROUP_AUTHORITIES (
+	  GROUP_ID BIGINT NOT NULL,
+	  AUTHORITY VARCHAR(50) NOT NULL,
+	  CONSTRAINT FK_GROUP_AUTHORITIES_GROUP FOREIGN KEY(GROUP_ID) REFERENCES GROUPS(ID)
+	  );
 
-	create table if not exists group_members (
-	  id BIGINT AUTO_INCREMENT  primary key,
-	  username varchar(50) not null,
-	  group_id bigint not null,
-	  constraint fk_group_members_group foreign key(group_id) references groups(id));
+	CREATE TABLE IF NOT EXISTS GROUP_MEMBERS (
+	  ID BIGINT AUTO_INCREMENT  PRIMARY KEY,
+	  USERNAME VARCHAR(50) NOT NULL,
+	  GROUP_ID BIGINT NOT NULL,
+	  CONSTRAINT FK_GROUP_MEMBERS_GROUP FOREIGN KEY(GROUP_ID) REFERENCES GROUPS(ID)
+	  );
 
-	create table if not exists  persistent_logins (
-	  username varchar(64) not null,
-	  series varchar(64) primary key,
-	  token varchar(64) not null,
-	  last_used timestamp not null);
+	CREATE TABLE IF NOT EXISTS  PERSISTENT_LOGINS (
+	  USERNAME VARCHAR(64) NOT NULL,
+	  SERIES VARCHAR(64) PRIMARY KEY,
+	  TOKEN VARCHAR(64) NOT NULL,
+	  LAST_USED TIMESTAMP NOT NULL
+	  );
 
 
-	create table if not exists oauth_client_details (
-	  client_id VARCHAR(128) PRIMARY KEY,
-	  resource_ids VARCHAR(128),
-	  client_secret VARCHAR(128),
-	  scope VARCHAR(128),
-	  authorized_grant_types VARCHAR(128),
-	  web_server_redirect_uri VARCHAR(128),
-	  authorities VARCHAR(128),
-	  access_token_validity INTEGER,
-	  refresh_token_validity INTEGER,
-	  additional_information VARCHAR(128)
+	CREATE TABLE IF NOT EXISTS OAUTH_CLIENT_DETAILS (
+	  CLIENT_ID VARCHAR(128) PRIMARY KEY,
+	  RESOURCE_IDS VARCHAR(128),
+	  CLIENT_SECRET VARCHAR(128),
+	  SCOPE VARCHAR(128),
+	  AUTHORIZED_GRANT_TYPES VARCHAR(128),
+	  WEB_SERVER_REDIRECT_URI VARCHAR(128),
+	  AUTHORITIES VARCHAR(128),
+	  ACCESS_TOKEN_VALIDITY INTEGER,
+	  REFRESH_TOKEN_VALIDITY INTEGER,
+	  ADDITIONAL_INFORMATION VARCHAR(128)
 	);
 
-	create table if not exists oauth_client_token (
-	  token_id VARCHAR(255),
-	  token longblob,
-	  authentication_id VARCHAR(255),
-	  user_name VARCHAR(255),
-	  client_id VARCHAR(255)
+	CREATE TABLE IF NOT EXISTS OAUTH_CLIENT_TOKEN (
+	  TOKEN_ID VARCHAR(255),
+	  TOKEN LONGBLOB,
+	  AUTHENTICATION_ID VARCHAR(255),
+	  USER_NAME VARCHAR(255),
+	  CLIENT_ID VARCHAR(255)
 	);
 
-	create table if not exists oauth_access_token (
-	  token_id VARCHAR(255),
-	  token longblob,
-	  authentication_id VARCHAR(255),
-	  user_name VARCHAR(255),
-	  client_id VARCHAR(255),
-	  authentication longblob,
-	  refresh_token VARCHAR(255)
+	CREATE TABLE IF NOT EXISTS OAUTH_ACCESS_TOKEN (
+	  TOKEN_ID VARCHAR(255),
+	  TOKEN LONGBLOB,
+	  AUTHENTICATION_ID VARCHAR(255),
+	  USER_NAME VARCHAR(255),
+	  CLIENT_ID VARCHAR(255),
+	  AUTHENTICATION LONGBLOB,
+	  REFRESH_TOKEN VARCHAR(255)
 	);
 
-	create table if not exists oauth_refresh_token (
-	  token_id VARCHAR(255),
-	  token longblob,
-	  authentication longblob
+	CREATE TABLE IF NOT EXISTS OAUTH_REFRESH_TOKEN (
+	  TOKEN_ID VARCHAR(255),
+	  TOKEN LONGBLOB,
+	  AUTHENTICATION LONGBLOB
 	);
 
-	create table if not exists oauth_code (
-	  code VARCHAR(255), authentication longblob
+	CREATE TABLE IF NOT EXISTS OAUTH_CODE (
+	  CODE VARCHAR(255), AUTHENTICATION LONGBLOB
 	);
 
-	create table if not exists ClientDetails (
-	  appId VARCHAR(128) PRIMARY KEY,
-	  resourceIds VARCHAR(128),
-	  appSecret VARCHAR(128),
-	  scope VARCHAR(128),
-	  grantTypes VARCHAR(128),
-	  redirectUrl VARCHAR(128),
-	  authorities VARCHAR(128),
-	  access_token_validity INTEGER,
-	  refresh_token_validity INTEGER,
-	  additionalInformation VARCHAR(255)
+	CREATE TABLE IF NOT EXISTS CLIENTDETAILS (
+	  APPID VARCHAR(128) PRIMARY KEY,
+	  RESOURCEIDS VARCHAR(128),
+	  APPSECRET VARCHAR(128),
+	  SCOPE VARCHAR(128),
+	  GRANTTYPES VARCHAR(128),
+	  REDIRECTURL VARCHAR(128),
+	  AUTHORITIES VARCHAR(128),
+	  ACCESS_TOKEN_VALIDITY INTEGER,
+	  REFRESH_TOKEN_VALIDITY INTEGER,
+	  ADDITIONALINFORMATION VARCHAR(255)
 	);
