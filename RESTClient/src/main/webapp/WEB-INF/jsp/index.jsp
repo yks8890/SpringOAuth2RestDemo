@@ -1,77 +1,62 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html;  charset=UTF-8">
 <title>REST Client</title>
-<!-- http://localhost:8080 -->
-<%
-	//String url = request.getScheme() + "://" + request.getServerName()+ ":" + request.getServerPort();
-	//String url = "https" + "://" + request.getServerName()+ ":" + "8443";
-	String url = "http" + "://" + request.getServerName() + ":"	+ "8080";
-	//String clientURL="http://restclient-oauth.cloudfoundry.com";
-	//String serverURL = "https://restserver-oauth.cloudfoundry.com";
-	String clientURL = url + "/RESTClient";
-	String serverURL = url + "/RESTServer";
-	String authURL = url + "/AuthServer";
-%>
-
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
 <script type="text/javascript" src="js/jso.js"></script>
+<c:set var="baseUrl"
+	value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}" />
 <script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
-						jso_configure({
-							"rest" : {
-								client_id : "client1",
-								redirect_uri : "<%=clientURL%>/index.jsp",
-								debug : true,
-								authorization : "<%=authURL%>/oauth/authorize"
-							}
-						});
-
-						jso_ensureTokens({
-							"rest" : [ "read","write", "delete" ]
-						});
-
-						jso_dump();
-						$("#getButton").click(function() {
-							getPerson($("#id").val());
-							return false;
-						});
-
-						$("#delete").click(function() {
-							deletePerson($("#id").val());
-							return false;
-						});
-
-						$("#save").click(function() {
-							savePerson();
-							return false;
-						});
-
-						$("#clear").click(function() {
-							$("#id").val("");
-							$("#json").html("");
-							$("#personId").val("");
-							$("#firstName").val("");
-							$("#lastName").val("");
-							$("#number").val("");
-							$("#birthDate").val("");
-							return false;
-						});
-
-					});
-
+	var clientURL = "${baseUrl}/RESTClient";
+	var serverURL = "${baseUrl}/RESTServer";
+	var authURL = "${baseUrl}/AuthServer";
+	$(document).ready(function() {
+		jso_configure({
+			"rest" : {
+				client_id : "client1",
+				redirect_uri : clientURL + "/index.jsp",
+				debug : true,
+				authorization : authURL + "/oauth/authorize"
+			}
+		});
+		jso_ensureTokens({
+			"rest" : [ "read", "write", "delete" ]
+		});
+		jso_dump();
+		$("#getButton").click(function() {
+			getPerson($("#id").val());
+			return false;
+		});
+		$("#delete").click(function() {
+			deletePerson($("#id").val());
+			return false;
+		});
+		$("#save").click(function() {
+			savePerson();
+			return false;
+		});
+		$("#clear").click(function() {
+			$("#id").val("");
+			$("#json").html("");
+			$("#personId").val("");
+			$("#firstName").val("");
+			$("#lastName").val("");
+			$("#number").val("");
+			$("#birthDate").val("");
+			return false;
+		});
+	});
 	function getPerson(id) {
 		var oneEntity = false;
 		if (id) {
-			var url = "<%=serverURL%>/rest/person/" + id;
+			var url = serverURL + "/rest/person/" + id;
 			oneEntity = true;
 		} else {
-			var url = "<%=serverURL%>/rest/persons/";
+			var url = serverURL + "/rest/persons/";
 			oneEntity = false;
 		}
 		$.oajax({
@@ -79,26 +64,24 @@
 			jso_provider : "rest", // Will match the config identifier
 			dataType : 'json',
 			error : function(jqXHR, textStatus, errorThrown) {
-				if(errorThrown == "Unauthorized"){
+				if (errorThrown == "Unauthorized") {
 					location.reload();
-				}else{
-					alert("error:"+errorThrown);
+				} else {
+					alert("error:" + errorThrown);
 				}
 			},
 			success : function(data) {
 				var myObj = eval(data);
 				if (oneEntity) {
 					loadForm(myObj);
-				}else{
+				} else {
 					$("#json").html(JSON.stringify(myObj));
 				}
 			}
 		});
 	}
-
 	function savePerson() {
-
-		var url = "<%=serverURL%>/rest/person/";
+		var url = serverURL + "/rest/person/";
 		var person = getPersonForm();
 		var newEntity = true;
 		if (person.id) {
@@ -116,10 +99,10 @@
 				dataType : 'json',
 				contentType : "application/json; charset=utf-8",
 				error : function(jqXHR, textStatus, errorThrown) {
-					if(errorThrown == "Unauthorized"){
+					if (errorThrown == "Unauthorized") {
 						location.reload();
-					}else{
-						alert("error:"+errorThrown);
+					} else {
+						alert("error:" + errorThrown);
 					}
 				},
 				success : function(data) {
@@ -136,10 +119,10 @@
 				dataType : 'json',
 				contentType : "application/json; charset=utf-8",
 				error : function(jqXHR, textStatus, errorThrown) {
-					if(errorThrown == "Unauthorized"){
+					if (errorThrown == "Unauthorized") {
 						location.reload();
-					}else{
-						alert("error:"+errorThrown);
+					} else {
+						alert("error:" + errorThrown);
 					}
 				},
 				success : function(data) {
@@ -149,9 +132,8 @@
 			});
 		}
 	}
-
 	function deletePerson(id) {
-		var url = "<%=serverURL%>/rest/person/" + id;
+		var url = serverURL + "/rest/person/" + id;
 		$.oajax({
 			url : url,
 			type : 'DELETE',
@@ -172,7 +154,6 @@
 			}
 		});
 	}
-
 	function getPersonForm() {
 		var person = {};
 		if ($("#personId").val()) {
@@ -192,7 +173,6 @@
 		}
 		return person;
 	}
-
 	function loadForm(Person) {
 		$("#id").val(Person.id);
 		$("#json").html(JSON.stringify(Person));
