@@ -18,7 +18,7 @@
 		jso_configure({
 			"rest" : {
 				client_id : "client1",
-				redirect_uri : clientURL + "/index.jsp",
+				redirect_uri : clientURL + "/",
 				debug : true,
 				authorization : authURL + "/oauth/authorize"
 			}
